@@ -1,212 +1,172 @@
-Todo App
-Project Description
+# Todo Application
 
-This project is a full-featured Todo application built with React and Vite. It demonstrates modern frontend architecture, authentication flows, protected routing, server-state management, and clean UI patterns.
+# Todo Application
+
+This project is a full-featured Todo application built with React. It demonstrates modern frontend architecture, authentication flows, protected routing, server-state management, and clean UI patterns.
 
 The application allows users to register, log in, and manage their personal tasks through a responsive and user-friendly interface. It follows a feature-based folder structure to improve scalability and maintainability.
 
 The project is designed to showcase production-ready React development practices.
 
-Features
+## Features
+
+### Core Functionality
+
+- **Create, Read, Update, Delete (CRUD)** operations for todos
+- **Authentication system** with login and registration
+- **Protected routes** for authenticated users
+- **Responsive design** with mobile-first approach
+- **Modern UI(ShadCN)** with Tailwind CSS and custom components
+
+### Technical Features
+
+- **React 19+** for fast development and optimized builds
+- **React Router v6** for modern routing and navigation
+- **React 19+** for fast development and optimized builds
+- **Custom Error Boundaries** for improved user experience
+- **Tailwind CSS** for styling with custom design system
+- **Responsive design** that works on all devices
+- **Production ready** with Vercel deployment
 
-User registration and login
+## Architecture
 
-Protected routes (only authenticated users can access todos)
+### File Structure
 
-Add new todo items
+```
+src/
+├── api/
+├── app/
+│   └── router.jsx                # Application routing configuration
+├── components/
+│   ├── shared/                   # Layout and Navbar components
+│   ├── ui/                       # Reusable UI components
+│   └── error-boundary.jsx        # Global error boundary
+├── features/
+│   ├── auth/
+│   │   ├── pages/                # Login & Register pages
+│   │   ├── context/              # Authentication context
+│   │   └── services/             # Auth API logic
+│   └── todoTasks/
+│       ├── todos/                # Todo list & form
+│       ├── details/              # Todo details page
+│       └── services/             # Todo API logic
+├── hooks/                        # Custom hooks
+├── lib/                     	# Axios instance & API config
+├── pages/                       # Protected route logic
+├── main.jsx                      # Application entry point
+└── index.css ```
 
-Edit existing todos in a modal dialog
+### Key Technologies
 
-Delete todos
+- **React 19+**
+- **API Intergration using axios with Tanstack Query** 
+- **Tailwind CSS**
+- **ShadCN UI** 
+- **Lucide React Icons** 
+- **React Hook Form** 
+- **Vercel** - Deployment platform
 
-Search todos by title
+## Getting Started
 
-Filter todos by completion status
+### Prerequisites
 
-Client-side pagination
+- Node.js 18+ or Bun
+- npm, yarn, pnpm, or bun package manager
 
-Form validation using schema-based validation
+### Installation
 
-Custom error boundary for improved user experience
+1. **Clone the repository**
 
-Responsive layout using Tailwind CSS
+   ```bash
+   git clone <your-repo-url>
+   cd todo-app
+   ```
 
-Clean modular architecture
+2. **Install dependencies**
 
-Screenshots / Key Features
+   ```bash
+   # Using npm
+   npm install
 
-Add your real screenshots inside a screenshots/ folder and reference them like below.
+   # Using yarn
+   yarn install
 
-Authentication (Login & Register)
+   # Using pnpm
+   pnpm install
 
+   # Using bun
+   bun install
+   ```
 
+3. **Set up environment variables**
 
+   ```bash
+   # Create .env.local file
+   cp .env.example .env.local
+   ```
 
-Todo List with Search and Filters
+4. **Run the development server**
 
-Add / Edit Todo Modal
+   ```bash
+   # Using npm
+   npm run dev
 
-Optional: You can also include a GIF:
+   # Using yarn
+   yarn dev
 
-![App Demo](screenshots/demo.gif)
+   # Using pnpm
+   pnpm dev
 
+   # Using bun
+   bun dev
+   ```
 
-To create a GIF:
+5. **Open your browser**
+   Navigate to [http://localhost:5173](http://localhost:5173) to see the application.
 
-Use ScreenToGif (Windows)
+## UI Components
 
-Use Kap (Mac)
+### Todo List
 
-Use an online screen recorder
+- Displays all todos with status indicators
+- Search and filter controls
+- Pagination controls
+- Edit and delete actions
 
-Setup Instructions
-1. Clone the repository
-git clone https://github.com/your-username/todo-app.git
-cd todo-app
+### Todo Detail
 
-2. Install dependencies
-npm install
+- Shows complete todo information
+- Edit and delete buttons
+- Responsive layout
 
-3. Create environment file
+### Forms
 
-Create a .env file in the root directory:
+- Create new todo form
+- Edit existing todo form
+- Form validation with zod and error handling
 
-VITE_API_URL=https://your-api-url.com
+### Delete Confirmation
 
-4. Start development server
-npm run dev
+- Confirmation dialog for destructive actions
+- Clear warning about permanent deletion
 
+### Authentication Pages
+- Login form
+- Register form
 
-The app will run on:
+## Development
 
-http://localhost:5173
+### Code Style
 
-Available Scripts
+- **ESLint** for code quality
+- **Prettier** for code formatting
+- **Tailwind CSS** for styling
 
-In the project directory, you can run:
+## Deployment
 
-npm run dev
+### Vercel (Recommended)
 
-Starts the development server using Vite.
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Deploy automatically on every push
 
-npm run build
-
-Builds the app for production to the dist folder.
-
-npm run preview
-
-Locally previews the production build.
-
-npm run lint
-
-Runs ESLint to check for code quality issues.
-
-Technology Choices and Reasoning
-React (with Vite)
-
-React was chosen for its component-based architecture and ecosystem.
-Vite was used for fast development startup and optimized production builds.
-
-React Router v6
-
-Used for client-side routing.
-Provides nested routes, protected routes, and route-based error handling.
-
-TanStack Query (React Query)
-
-Used for server-state management instead of manually managing loading and error states.
-Benefits:
-
-Automatic caching
-
-Background refetching
-
-Mutation handling
-
-Improved separation of server state and UI state
-
-React Hook Form + Zod
-
-React Hook Form was chosen for performant form handling with minimal re-renders.
-Zod was used for schema validation to ensure predictable and reusable validation logic.
-
-Tailwind CSS
-
-Chosen for utility-first styling, faster development, and responsive design control.
-
-shadcn/ui
-
-Provides accessible, composable UI components built on top of Radix UI.
-Improves design consistency and development speed.
-
-Feature-Based Architecture
-
-The project follows a feature-based folder structure:
-
-features/
-  auth/
-  todoTasks/
-components/
-routes/
-services/
-
-
-This improves:
-
-Maintainability
-
-Scalability
-
-Separation of concerns
-
-Known Issues
-
-Pagination is client-side (not server-side).
-
-No role-based access control.
-
-No optimistic UI updates for mutations.
-
-Error messages could be more user-friendly.
-
-No automated testing implemented yet.
-
-Future Improvements
-
-Add optimistic updates using React Query
-
-Implement server-side pagination
-
-Add unit and integration tests (React Testing Library)
-
-Add dark mode toggle
-
-Add toast notifications for actions
-
-Improve accessibility (ARIA improvements)
-
-Add Docker support
-
-Add CI/CD pipeline
-
-Deployment
-
-The application can be deployed to:
-
-Vercel
-
-Netlify
-
-Render
-
-Make sure to configure:
-
-VITE_API_URL
-
-
-as an environment variable in the deployment platform.
-
-Author
-
-Your Name
-GitHub: https://github.com/your-username
