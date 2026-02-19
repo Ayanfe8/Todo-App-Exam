@@ -65,8 +65,14 @@ export function AuthProvider({ children }) {
 
       localStorage.setItem("accessToken", res.data.accessToken);
       return res.data.accessToken;
-    } catch {
-      logout();
+    } catch (error) {
+      if (error.response?.status === 401) {
+        const newToken = await refresh();
+        if (newToken) {
+          const res = await axiosInstance.get("/auth/me");
+          setUser(res.data);
+        }
+      }
     }
   };
 
