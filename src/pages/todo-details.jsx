@@ -90,7 +90,10 @@ export default function TodoDetails() {
             <Button
               variant="destructive"
               size="sm"
-              onClick={() => setShowConfirm(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowConfirm(true);
+              }}
             >
               <Trash2 size={16} /> Delete
             </Button>
