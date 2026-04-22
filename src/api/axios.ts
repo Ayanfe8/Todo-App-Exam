@@ -1,3 +1,11 @@
+declare global {
+  interface ImportMeta {
+    env: {
+      VITE_API_URL: string;
+    };
+  }
+}
+
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -28,8 +36,8 @@ axiosInstance.interceptors.response.use(
       console.log("Unauthorized, 401 detected");
     }
 
-    return Promise.reject(error)
-  }
+    return Promise.reject(error);
+  },
 );
 
 export default axiosInstance;
