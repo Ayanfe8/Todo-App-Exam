@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import axiosInstance from "@/api/axios";
 import { AuthContext } from "./auth-context";
+import type { User, AuthTokenResponse } from "@/types";
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Load user on startup
   useEffect(() => {
     const loadUser = async () => {
       const token = localStorage.getItem("accessToken");
@@ -14,9 +18,8 @@ export function AuthProvider({ children }) {
         setLoading(false);
         return;
       }
-
       try {
-        const res = await axiosInstance.get("/auth/me");
+        const res = await axiosInstance.get<User>("/auth/me");
         setUser(res.data);
       } catch {
         logout();
@@ -28,64 +31,53 @@ export function AuthProvider({ children }) {
     loadUser();
   }, []);
 
-  const register = async (data) => {
-    const res = await axiosInstance.post("/auth/register", {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
+  const register = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }): Promise<void> => {
+    const res = await axiosInstance.post<AuthTokenResponse>("/auth/register", data);
     localStorage.setItem("accessToken", res.data.accessToken);
     localStorage.setItem("refreshToken", res.data.refreshToken);
-
     setUser(res.data.user);
   };
 
-  const login = async (data) => {
-    const res = await axiosInstance.post("/auth/login", {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
-
+  const login = async (data: {
+    email: string;
+    password: string;
+  }): Promise<void> => {
+    const res = await axiosInstance.post<AuthTokenResponse>("/auth/login", data);
     localStorage.setItem("accessToken", res.data.accessToken);
     localStorage.setItem("refreshToken", res.data.refreshToken);
-
     setUser(res.data.user);
   };
 
-  const refresh = async () => {
+  const refresh = async (): Promise<string | undefined> => {
     const refreshToken = localStorage.getItem("refreshToken");
-
-    if (!refreshToken) return logout();
-
+    if (!refreshToken) {
+      logout();
+      return undefined;
+    }
     try {
-      const res = await axiosInstance.post("/auth/refresh", {
+      const res = await axiosInstance.post<{ accessToken: string }>("/auth/refresh", {
         refreshToken,
       });
-
       localStorage.setItem("accessToken", res.data.accessToken);
       return res.data.accessToken;
-    } catch (error) {
-      if (error.response?.status === 401) {
-        const newToken = await refresh();
-        if (newToken) {
-          const res = await axiosInstance.get("/auth/me");
-          setUser(res.data);
-        }
-      }
+    } catch {
+      logout();
+      return undefined;
     }
   };
 
-  const logout = () => {
+  const logout = (): void => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, login, register, logout, refresh, loading }}
-    >
+    <AuthContext.Provider value={{ user, login, register, logout, refresh, loading }}>
       {children}
     </AuthContext.Provider>
   );
