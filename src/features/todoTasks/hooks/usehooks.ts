@@ -1,17 +1,20 @@
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getTodos,
   getTodo,
   createTodo,
   updateTodo,
   deleteTodo,
+  type CreateTodoData,
+  type UpdateTodoData,
 } from "@/api/tasks";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { TaskStatus } from "@/types";
 
 export const useCreateTodo = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createTodo,
+    mutationFn: (data: CreateTodoData) => createTodo(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
@@ -22,7 +25,8 @@ export const useUpdateTodo = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }) => updateTodo(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateTodoData }) =>
+      updateTodo(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
@@ -33,23 +37,27 @@ export const useDeleteTodo = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteTodo,
+    mutationFn: (id: string) => deleteTodo(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   });
 };
 
-export const useTodos = (page, limit, search, status) => {
+export const useTodos = (
+  page: number,
+  limit: number,
+  search: string,
+  status: TaskStatus | "all"
+) => {
   return useQuery({
     queryKey: ["todos", page, limit, search, status],
     queryFn: () => getTodos(page, limit, search, status),
-    keepPreviousData: true,
+    placeholderData: (prev) => prev, // replaces keepPreviousData in v5
   });
 };
 
-
-export const useTodo = (id) => {
+export const useTodo = (id: string) => {
   return useQuery({
     queryKey: ["todo", id],
     queryFn: () => getTodo(id),
