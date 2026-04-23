@@ -7,7 +7,7 @@ export function useTodoFilters() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<TaskStatus | "all">("all");
 
-  const debouncedSearch = useDebounce(search);
+  const debouncedSearch = useDebounce(search, 500);
 
   return {
     page,
