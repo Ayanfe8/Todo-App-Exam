@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
-import { getTodo, deleteTodo } from "../api/tasks";
-import ErrorState from "../components/errorstate";
-import ConfirmDialog from "../components/confirmdialog";
+import { getTodo, deleteTodo } from "@/api/tasks";
+import ErrorState from "@/components/errorstate";
+import ConfirmDialog from "@/components/confirmdialog";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Trash2, Edit } from "lucide-react";
-import TodoForm from "../features/todoTasks/todos/todo-form";
+import TodoForm from "@/features/todoTasks/todos/todo-form";
+import { useUpdateTodo } from "@/features/todoTasks/hooks/usehooks";
+import type { TodoFormData } from "@/features/todoTasks/todos/todo-schema";
 
 export default function TodoDetails() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const updateMutation = useUpdateTodo();
 
   const [isEditing, setIsEditing] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -24,11 +27,12 @@ export default function TodoDetails() {
     refetch,
   } = useQuery({
     queryKey: ["todo", id],
-    queryFn: () => getTodo(id),
+    queryFn: () => getTodo(id!),
+    enabled: !!id,
   });
 
   const deleteMutation = useMutation({
-    mutationFn: () => deleteTodo(id),
+    mutationFn: () => deleteTodo(id!),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
       navigate("/todos");
@@ -37,9 +41,18 @@ export default function TodoDetails() {
 
   if (isLoading) return <p className="p-6 text-sm">Loading...</p>;
 
-  if (isError) return <ErrorState message={error.message} retry={refetch} />;
+  if (isError)
+    return <ErrorState message={(error as Error).message} retry={refetch} />;
 
   if (!todo) return <p className="p-6 text-gray-500">Todo not found.</p>;
+
+  const handleSubmit = async (data: TodoFormData, editId?: string): Promise<void> => {
+    if (editId) {
+      await updateMutation.mutateAsync({ id: editId, data });
+      setIsEditing(false);
+      await refetch();
+    }
+  };
 
   return (
     <main className="p-6 space-y-6">
@@ -48,17 +61,11 @@ export default function TodoDetails() {
       </Button>
 
       {isEditing ? (
-        <TodoForm
-          initialData={todo}
-          onSuccess={async () => {
-            setIsEditing(false);
-            await refetch();
-          }}
-        />
+        <TodoForm initialData={todo} onSubmitTodo={handleSubmit} />
       ) : (
         <>
           <div className="border rounded p-4 space-y-4">
-            <h1 className="text-2xl font-semibold">{todo.title}</h1>
+            <h1 className="text-2xl font-semibold">{todo.name}</h1>
 
             <p>
               Status:{" "}
@@ -101,14 +108,13 @@ export default function TodoDetails() {
         </>
       )}
 
-      {showConfirm && (
-        <ConfirmDialog
-          title="Delete Todo"
-          message="Are you sure you want to delete this todo? This cannot be undone."
-          onCancel={() => setShowConfirm(false)}
-          onConfirm={() => deleteMutation.mutate()}
-        />
-      )}
+      <ConfirmDialog
+        open={showConfirm}
+        title="Delete Todo"
+        description="Are you sure you want to delete this todo? This cannot be undone."
+        onCancel={() => setShowConfirm(false)}
+        onConfirm={() => deleteMutation.mutate()}
+      />
     </main>
   );
 }

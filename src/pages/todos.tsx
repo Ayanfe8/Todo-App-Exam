@@ -11,14 +11,14 @@ import {
 } from "@/features/todoTasks/hooks/usehooks";
 import { useTodoFilters } from "@/features/todoTasks/hooks/useTodoFilters";
 import ErrorState from "@/components/errorstate";
-import ConfirmDialog from "@/components/confirmdialog";
+import type { Todo, TaskStatus } from "@/types";
+import type { TodoFormData } from "@/features/todoTasks/todos/todo-schema";
 
 export default function Todos() {
-  const [selectedTodo, setSelectedTodo] = useState(null);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
   const createMutation = useCreateTodo();
   const updateMutation = useUpdateTodo();
-
   const navigate = useNavigate();
 
   const {
@@ -35,17 +35,25 @@ export default function Todos() {
     page,
     10,
     debouncedSearch,
-    statusFilter,
+    statusFilter
   );
 
   const todos = data?.data ?? [];
+
+  const handleSubmit = async (data: TodoFormData, id?: string): Promise<void> => {
+    if (id) {
+      await updateMutation.mutateAsync({ id, data });
+      return;
+    }
+    await createMutation.mutateAsync({ ...data, status: "TODO" });
+  };
 
   if (isLoading) return <p className="p-6">Loading...</p>;
 
   if (isError)
     return (
       <ErrorState
-        message={error?.message || "Failed to load todos"}
+        message={(error as Error)?.message ?? "Failed to load todos"}
         retry={refetch}
       />
     );
@@ -54,42 +62,27 @@ export default function Todos() {
     <section className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Tasks</h1>
 
-      <TodoForm
-        onSubmitTodo={async (data, id) => {
-          if (id) {
-            await updateMutation.mutateAsync({ id, data });
-            return;
-          }
+      <TodoForm onSubmitTodo={handleSubmit} />
 
-          await createMutation.mutateAsync({
-            ...data,
-            status: "TODO",
-          });
-        }}
-      />
-
-      {/* Search Form */}
       <TodoFilter
         search={search}
-        setSearch={(value) => {
+        setSearch={(value: string) => {
           setPage(1);
           setSearch(value);
         }}
-        statusFilter={"all"}
-        setStatusFilter={(value) => {
+        statusFilter={statusFilter}
+        setStatusFilter={(value: TaskStatus) => {
           setPage(1);
           setStatusFilter(value);
         }}
       />
 
-      {/* Todo List */}
       <TodoList
         todos={todos}
         onEdit={(todo) => setSelectedTodo(todo)}
         onNavigate={(id) => navigate(`/todos/${id}`)}
       />
 
-      {/* Pagination */}
       <Pagination
         page={page}
         hasNextPage={data?.meta?.hasNextPage ?? false}
@@ -108,13 +101,7 @@ export default function Todos() {
                 if (id) {
                   await updateMutation.mutateAsync({ id, data });
                   setSelectedTodo(null);
-                  return;
                 }
-
-                return createMutation.mutateAsync({
-                  ...data,
-                  status: "TODO",
-                });
               }}
             />
 
