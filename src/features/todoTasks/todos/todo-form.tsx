@@ -1,12 +1,18 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { todoSchema } from "./todo-schema";
+import { todoSchema, type TodoFormData } from "./todo-schema";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import type { Todo } from "@/types";
 
-export default function TodoForm({ initialData = null, onSubmitTodo }) {
+interface TodoFormProps {
+  initialData?: Todo | null;
+  onSubmitTodo: (data: TodoFormData, id?: string) => Promise<void>;
+}
+
+export default function TodoForm({ initialData = null, onSubmitTodo }: TodoFormProps) {
   const isEditMode = !!initialData;
 
   const {
@@ -14,7 +20,7 @@ export default function TodoForm({ initialData = null, onSubmitTodo }) {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm({
+  } = useForm<TodoFormData>({
     resolver: zodResolver(todoSchema),
     defaultValues: {
       name: "",
@@ -23,28 +29,22 @@ export default function TodoForm({ initialData = null, onSubmitTodo }) {
   });
 
   useEffect(() => {
-    if (initialData) {
-      reset({
-        name: initialData.name || "",
-        completed: initialData.completed || false,
-      });
-    }
+    reset({
+      name: initialData?.name ?? "",
+      completed: initialData?.completed ?? false,
+    });
   }, [initialData, reset]);
-
-  async function onSubmit(data,) {
-    try{
+  async function onSubmit(data: TodoFormData) {
+    try {
       await onSubmitTodo(data, initialData?.id);
       reset();
     } catch (error) {
-      console.log(error)
+      console.error(error);
     }
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4 border rounded p-4"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 border rounded p-4">
       <div className="space-y-1">
         <Label htmlFor="name">Name</Label>
         <Input id="name" {...register("name")} />
@@ -54,10 +54,9 @@ export default function TodoForm({ initialData = null, onSubmitTodo }) {
       </div>
 
       <div className="flex items-center gap-2">
-        <input type="checkbox" {...register("completed")} />
-        <Label>Completed</Label>
+        <input type="checkbox" id="completed" {...register("completed")} />
+        <Label htmlFor="completed">Completed</Label>
       </div>
-
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Saving..." : isEditMode ? "Update Todo" : "Add Todo"}
       </Button>
