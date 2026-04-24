@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from "lucide-react"
+import { Pencil, Trash2 } from "lucide-react";
 import { useDeleteTodo } from "@/features/todoTasks/hooks/usehooks";
 import {
   AlertDialog,
@@ -10,12 +10,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import type { Todo } from "@/types";
 
-export default function TodoCard({
-  todo,
-  onEdit,
-  onNavigate,
-}) {
+interface TodoCardProps {
+  todo: Todo;
+  onEdit: (todo: Todo) => void;
+  onNavigate: (id: string) => void;
+}
+
+export default function TodoCard({ todo, onEdit, onNavigate }: TodoCardProps) {
   const deleteMutation = useDeleteTodo();
 
   return (
@@ -26,14 +29,8 @@ export default function TodoCard({
       <div>
         <p className="font-medium">{todo.name}</p>
         <p className="text-sm text-gray-500">
-          Status:
-          <span
-            className={
-              todo.status === "DONE"
-                ? "text-green-600"
-                : "text-yellow-600"
-            }
-          >
+          Status:{" "}
+          <span className={todo.status === "DONE" ? "text-green-600" : "text-yellow-600"}>
             {todo.status}
           </span>
         </p>
@@ -53,7 +50,7 @@ export default function TodoCard({
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <button 
+            <button
               onClick={(e) => e.stopPropagation()}
               className="text-red-400 hover:text-red-300 transition-colors"
               title="Delete Todo"
@@ -61,7 +58,7 @@ export default function TodoCard({
               <Trash2 size={20} />
             </button>
           </AlertDialogTrigger>
-          
+
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure you want to delete this?</AlertDialogTitle>
@@ -84,5 +81,3 @@ export default function TodoCard({
     </li>
   );
 }
-
-
