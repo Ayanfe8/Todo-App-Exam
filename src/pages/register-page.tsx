@@ -13,7 +13,9 @@ const registerSchema = z
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email"),
     password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string().min(6, "Confirm Password must be at least 6 characters"),
+    confirmPassword: z
+      .string()
+      .min(6, "Confirm Password must be at least 6 characters"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -51,34 +53,47 @@ export default function RegisterPage() {
           <CardTitle>Register</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
             <div>
-              <Label>Name</Label>
-              <Input type="text" {...register("name")} />
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" type="text" {...register("name")} />
               {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
             <div>
-              <Label>Email</Label>
-              <Input type="email" {...register("email")} />
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" {...register("email")} />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
             <div>
-              <Label>Password</Label>
-              <Input type="password" {...register("password")} />
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" {...register("password")} />
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
             <div>
-              <Label>Confirm Password</Label>
-              <Input type="password" {...register("confirmPassword")} />
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                {...register("confirmPassword")}
+              />
               {errors.confirmPassword && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.confirmPassword.message}
@@ -92,7 +107,10 @@ export default function RegisterPage() {
 
             <p className="text-center text-sm text-muted-foreground mt-4">
               Already have an account?{" "}
-              <Link to="/login" className="font-medium text-primary hover:underline">
+              <Link
+                to="/login"
+                className="font-medium text-primary hover:underline"
+              >
                 Login
               </Link>
             </p>

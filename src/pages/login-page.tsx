@@ -19,7 +19,8 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? "/";
+  const from =
+    (location.state as { from?: { pathname: string } })?.from?.pathname ?? "/";
 
   const {
     register,
@@ -45,20 +46,27 @@ export default function LoginPage() {
           <CardTitle className="text-center font-bold text-xl">Login</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
             <div>
-              <Label>Email</Label>
-              <Input type="email" {...register("email")} />
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" {...register("email")} />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
             <div>
-              <Label>Password</Label>
-              <Input type="password" {...register("password")} />
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" {...register("password")} />
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
               )}
               <div className="text-right mt-1">
                 <Link
@@ -79,13 +87,18 @@ export default function LoginPage() {
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or</span>
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or
+                </span>
               </div>
             </div>
 
             <p className="text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
-              <Link to="/register" className="font-medium text-primary hover:underline">
+              <Link
+                to="/register"
+                className="font-medium text-primary hover:underline"
+              >
                 Sign up
               </Link>
             </p>

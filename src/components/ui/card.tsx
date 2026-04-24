@@ -102,10 +102,6 @@ function CardContent({
   return (<div data-slot="card-content" className={cn("px-6", className)} {...props} />);
 }
 
-interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  className?: string;
-}
-
 interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
