@@ -29,14 +29,11 @@ export default function TodoForm({ initialData = null, onSubmitTodo }: TodoFormP
   });
 
   useEffect(() => {
-    if (initialData) {
-      reset({
-        name: initialData.name ?? "",
-        completed: initialData.completed ?? false,
-      });
-    }
+    reset({
+      name: initialData?.name ?? "",
+      completed: initialData?.completed ?? false,
+    });
   }, [initialData, reset]);
-
   async function onSubmit(data: TodoFormData) {
     try {
       await onSubmitTodo(data, initialData?.id);
@@ -57,10 +54,9 @@ export default function TodoForm({ initialData = null, onSubmitTodo }: TodoFormP
       </div>
 
       <div className="flex items-center gap-2">
-        <input type="checkbox" {...register("completed")} />
-        <Label>Completed</Label>
+        <input type="checkbox" id="completed" {...register("completed")} />
+        <Label htmlFor="completed">Completed</Label>
       </div>
-
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Saving..." : isEditMode ? "Update Todo" : "Add Todo"}
       </Button>

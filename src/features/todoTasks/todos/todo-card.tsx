@@ -24,9 +24,16 @@ export default function TodoCard({ todo, onEdit, onNavigate }: TodoCardProps) {
   return (
     <li
       onClick={() => onNavigate(todo.id)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onNavigate(todo.id);
+        }
+      }}
+      role="button"
+      tabIndex={0}
       className="border rounded p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50"
-    >
-      <div>
+    >      <div>
         <p className="font-medium">{todo.name}</p>
         <p className="text-sm text-gray-500">
           Status:{" "}
