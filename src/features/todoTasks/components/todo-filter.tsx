@@ -5,13 +5,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { TaskStatus } from "@/types";
+
+interface TodoFilterProps {
+  search: string;
+  setSearch: (value: string) => void;
+  statusFilter: TaskStatus | "all";
+  setStatusFilter: (value: TaskStatus | "all") => void;
+}
 
 export default function TodoFilter({
   statusFilter,
   setStatusFilter,
   search,
   setSearch,
-}) {
+}: TodoFilterProps) {
   return (
     <div className="flex gap-3">
       <input

@@ -29,10 +29,14 @@ function DialogClose({
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
+interface DialogOverlayProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay> { 
+  className?: string;
+}
+
 function DialogOverlay({
   className,
   ...props
-}) {
+}: DialogOverlayProps) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
@@ -44,12 +48,18 @@ function DialogOverlay({
   );
 }
 
+interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> { 
+  className?: string;
+  showCloseButton?: boolean;
+  children?: React.ReactNode;
+}
+
 function DialogContent({
   className,
   children,
   showCloseButton = true,
   ...props
-}) {
+}: DialogContentProps) {
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
@@ -77,7 +87,7 @@ function DialogContent({
 function DialogHeader({
   className,
   ...props
-}) {
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       data-slot="dialog-header"
@@ -86,12 +96,18 @@ function DialogHeader({
   );
 }
 
+interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
+  showCloseButton?: boolean;
+  children?: React.ReactNode;
+}
+
 function DialogFooter({
   className,
   showCloseButton = false,
   children,
   ...props
-}) {
+}: DialogFooterProps) {
   return (
     <div
       data-slot="dialog-footer"
@@ -107,10 +123,14 @@ function DialogFooter({
   );
 }
 
+interface DialogTitleProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title> {
+  className?: string;
+}
+
 function DialogTitle({
   className,
   ...props
-}) {
+}: DialogTitleProps) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
@@ -119,10 +139,12 @@ function DialogTitle({
   );
 }
 
+
+
 function DialogDescription({
   className,
   ...props
-}) {
+}: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"

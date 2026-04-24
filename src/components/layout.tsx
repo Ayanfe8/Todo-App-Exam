@@ -1,6 +1,6 @@
 import Navbar from "./navbar";
 
-export default function Layout({ children }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-muted/40">
       <Navbar />
