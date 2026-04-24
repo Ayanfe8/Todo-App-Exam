@@ -1,19 +1,23 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { router } from "@/app/router";
 import { queryClient } from "@/app/queryclient";
 import ErrorBoundary from "@/app/ErrorBoundary";
 import { AuthProvider } from "@/features/auth/context/auth-provider"; // <-- import AuthProvider
+import App from "@/App";
 import "./index.css";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const rootEl = document.getElementById("root");
+if (!rootEl) {
+  throw new Error("Root element not found. Make sure index.html contains an element with id='root'");
+}
+
+ReactDOM.createRoot(rootEl).render(
   <StrictMode>
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <RouterProvider router={router} />
+          <App />
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

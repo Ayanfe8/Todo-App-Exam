@@ -2,12 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useState } from "react"
 
-interface ErrorTestProps {
-  message: string; 
-  retry?: () => void
-}
-
-export default function ErrorTest({ message, retry }: ErrorTestProps) {
+export default function ErrorTest() {
   const [shouldCrash, setShouldCrash] = useState(false)
 
   if (shouldCrash) {

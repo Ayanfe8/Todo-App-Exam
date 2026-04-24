@@ -23,8 +23,17 @@ export default function ConfirmDialog({
   onCancel,
   onConfirm,
 }: ConfirmDialogProps) {
+  const handleOpenChange = (isOpen: boolean) => {
+    // In Radix controlled mode, onOpenChange fires when user interacts with the dialog
+    // (backdrop click, ESC key, or prop change). Buttons call their handlers directly via onClick,
+    // so they don't trigger onOpenChange. This handler is called for non-button-driven closes.
+    if (!isOpen) {
+      onCancel();
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={(open: any) => !open && onCancel()}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -32,10 +41,10 @@ export default function ConfirmDialog({
         </DialogHeader>
 
         <DialogFooter className="flex justify-end gap-2">
-          <Button variant="outline" onClick={onCancel}>
+          <Button variant="outline" onClick={() => onCancel()}>
             Cancel
           </Button>
-          <Button variant="destructive" onClick={onConfirm}>
+          <Button variant="destructive" onClick={() => onConfirm()}>
             Confirm
           </Button>
         </DialogFooter>
