@@ -1,10 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { z } from "zod";
 import { useAuth } from "@/features/auth/context/use-auth";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,26 +13,29 @@ const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+type LoginFormData = z.infer<typeof loginSchema>;
+
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from =
+    (location.state as { from?: { pathname: string } })?.from?.pathname ?? "/";
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm({
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: LoginFormData): Promise<void> => {
     try {
       await login(data);
       navigate(from, { replace: true });
     } catch (err) {
-      alert(err.message);
+      alert((err as Error).message);
     }
   };
 
@@ -50,8 +51,8 @@ export default function LoginPage() {
             className="flex flex-col gap-4"
           >
             <div>
-              <Label>Email</Label>
-              <Input type="email" {...register("email")} />
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" {...register("email")} />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.email.message}
@@ -60,15 +61,13 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <Label>Password</Label>
-              <Input type="password" {...register("password")} />
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" {...register("password")} />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.password.message}
                 </p>
               )}
-
-              {/* Forgot Password Link */}
               <div className="text-right mt-1">
                 <Link
                   to="/forgot-password"
@@ -79,11 +78,10 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <Button type="submit" className="mt-2">
-              Login
+            <Button type="submit" className="mt-2" disabled={isSubmitting}>
+              {isSubmitting ? "Logging in..." : "Login"}
             </Button>
 
-            {/* Divider */}
             <div className="relative my-4">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -95,9 +93,8 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Sign Up Link */}
             <p className="text-center text-sm text-muted-foreground">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 to="/register"
                 className="font-medium text-primary hover:underline"

@@ -1,10 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { z } from "zod";
 import { useAuth } from "@/features/auth/context/use-auth";
-import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +22,8 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
+type RegisterFormData = z.infer<typeof registerSchema>;
+
 export default function RegisterPage() {
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();
@@ -32,17 +32,17 @@ export default function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: RegisterFormData): Promise<void> => {
     try {
       await registerUser(data);
       alert("Registration successful! Please login.");
       navigate("/login");
     } catch (err) {
-      alert(err.message);
+      alert((err as Error).message);
     }
   };
 
@@ -58,8 +58,8 @@ export default function RegisterPage() {
             className="flex flex-col gap-4"
           >
             <div>
-              <Label>Name</Label>
-              <Input type="text" {...register("name")} />
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" type="text" {...register("name")} />
               {errors.name && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.name.message}
@@ -68,8 +68,8 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <Label>Email</Label>
-              <Input type="email" {...register("email")} />
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" {...register("email")} />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.email.message}
@@ -78,8 +78,8 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <Label>Password</Label>
-              <Input type="password" {...register("password")} />
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" {...register("password")} />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.password.message}
@@ -88,8 +88,12 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <Label>Confirm Password</Label>
-              <Input type="password" {...register("confirmPassword")} />
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                {...register("confirmPassword")}
+              />
               {errors.confirmPassword && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.confirmPassword.message}
