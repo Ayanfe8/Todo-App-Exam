@@ -2,11 +2,13 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useState } from "react";
 import { useAuth } from "@/features/auth/context/use-auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import ErrorState from "@/components/errorstate";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -22,6 +24,8 @@ export default function LoginPage() {
   const from =
     (location.state as { from?: { pathname: string } })?.from?.pathname ?? "/";
 
+  const [error, setError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -31,11 +35,12 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormData): Promise<void> => {
+    setError(null);
     try {
       await login(data);
       navigate(from, { replace: true });
     } catch (err) {
-      alert((err as Error).message);
+      setError((err as Error).message);
     }
   };
 
@@ -46,6 +51,7 @@ export default function LoginPage() {
           <CardTitle className="text-center font-bold text-xl">Login</CardTitle>
         </CardHeader>
         <CardContent>
+          {error && <ErrorState message={error} retry={() => setError(null)} />}
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-4"

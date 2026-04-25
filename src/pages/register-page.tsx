@@ -2,11 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useState } from "react";
 import { useAuth } from "@/features/auth/context/use-auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import ErrorState from "@/components/errorstate";
 
 const registerSchema = z
   .object({
@@ -28,6 +30,8 @@ export default function RegisterPage() {
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();
 
+  const [error, setError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -37,12 +41,13 @@ export default function RegisterPage() {
   });
 
   const onSubmit = async (data: RegisterFormData): Promise<void> => {
+    setError(null);
     try {
       await registerUser(data);
       alert("Registration successful! Please login.");
       navigate("/login");
     } catch (err) {
-      alert((err as Error).message);
+      setError((err as Error).message);
     }
   };
 
@@ -53,6 +58,7 @@ export default function RegisterPage() {
           <CardTitle>Register</CardTitle>
         </CardHeader>
         <CardContent>
+          {error && <ErrorState message={error} retry={() => setError(null)} />}
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
