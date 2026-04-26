@@ -1,0 +1,267 @@
+import * as React from "react"
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
+import { Select as SelectPrimitive } from "radix-ui"
+
+import { cn } from "@/lib/utils"
+
+function Select({
+  ...props
+}) {
+  return <SelectPrimitive.Root data-slot="select" {...props} />;
+}
+
+/**
+ * Wraps Radix UI's SelectPrimitive.Group, forwarding all props and adding `data-slot="select-group"`.
+ *
+ * @param props - Props forwarded to the underlying SelectPrimitive.Group
+ * @returns A React element that renders a select group container
+ */
+function SelectGroup({
+  ...props
+}) {
+  return <SelectPrimitive.Group data-slot="select-group" {...props} />;
+}
+
+/**
+ * Renders a SelectPrimitive.Value element configured for this Select implementation.
+ *
+ * @returns The `SelectPrimitive.Value` element with `data-slot="select-value"` and any supplied props applied.
+ */
+function SelectValue({
+  ...props
+}) {
+  return <SelectPrimitive.Value data-slot="select-value" {...props} />;
+}
+
+interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
+  className?: string;
+  size?: "sm" | "default";
+  children?: React.ReactNode;
+}
+
+/**
+ * Render the Select's visible trigger control.
+ *
+ * Includes a dropdown icon and exposes a `data-size` attribute (`"sm"` or `"default"`)
+ * which controls the trigger's height.
+ *
+ * @param size - Visual size of the trigger; `"sm"` renders a shorter trigger, `"default"` renders the standard height.
+ * @returns The trigger element used as the Select's visible control.
+ */
+function SelectTrigger({
+  className,
+  size = "default",
+  children,
+  ...props
+}: SelectTriggerProps) {
+  return (
+    <SelectPrimitive.Trigger
+      data-slot="select-trigger"
+      data-size={size}
+      className={cn(
+        "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-fit items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      {...props}>
+      {children}
+      <SelectPrimitive.Icon asChild>
+        <ChevronDownIcon className="size-4 opacity-50" />
+      </SelectPrimitive.Icon>
+    </SelectPrimitive.Trigger>
+  );
+}
+
+interface SelectContentProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content> {
+  className?: string;
+  children?: React.ReactNode;
+  position?: "item-aligned" | "popper";
+  align?: "start" | "center" | "end";
+}
+
+/**
+ * Render the select dropdown content and its viewport, including scroll controls.
+ *
+ * @param className - Optional additional class names applied to the content container.
+ * @param children - Elements rendered inside the select viewport.
+ * @param position - Positioning strategy for the content. `"item-aligned"` aligns items by default; `"popper"` aligns the content to the trigger and enables small translation/offset adjustments.
+ * @param align - Horizontal alignment of the content relative to the trigger: `"start"`, `"center"`, or `"end"`.
+ * @returns The select content element (wrapped in a portal) containing scroll up/down controls and a viewport that renders `children`.
+ */
+function SelectContent({
+  className,
+  children,
+  position = "item-aligned",
+  align = "center",
+  ...props
+}: SelectContentProps) {
+  return (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Content
+        data-slot="select-content"
+        className={cn(
+          "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border shadow-md",
+          position === "popper" &&
+            "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+          className
+        )}
+        position={position}
+        align={align}
+        {...props}>
+        <SelectScrollUpButton />
+        <SelectPrimitive.Viewport
+          className={cn("p-1", position === "popper" &&
+            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1")}>
+          {children}
+        </SelectPrimitive.Viewport>
+        <SelectScrollDownButton />
+      </SelectPrimitive.Content>
+    </SelectPrimitive.Portal>
+  );
+}
+
+interface SelectLabelProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label> {
+  className?: string;
+}
+
+
+/**
+ * Renders a label for a group of select items.
+ *
+ * @returns The rendered label element for the select group.
+ */
+function SelectLabel({
+  className,
+  ...props
+}: SelectLabelProps) {
+  return (
+    <SelectPrimitive.Label
+      data-slot="select-label"
+      className={cn("text-muted-foreground px-2 py-1.5 text-xs", className)}
+      {...props} />
+  );
+}
+
+interface SelectItemProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> {
+  className?: string;
+  children?: React.ReactNode;
+}
+
+
+/**
+ * Render a selectable option for the Select component.
+ *
+ * Renders a styled Radix Select item that displays its content and a right-aligned selection indicator; merges `className` into the component's classes and forwards other props to the underlying Radix `SelectPrimitive.Item`.
+ *
+ * @param className - Optional additional CSS class names to apply to the item
+ * @param children - Content to render as the item's label
+ * @returns A React element representing a selectable item within the Select menu
+ */
+function SelectItem({
+  className,
+  children,
+  ...props
+}: SelectItemProps) {
+  return (
+    <SelectPrimitive.Item
+      data-slot="select-item"
+      className={cn(
+        "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        className
+      )}
+      {...props}>
+      <span
+        data-slot="select-item-indicator"
+        className="absolute right-2 flex size-3.5 items-center justify-center">
+        <SelectPrimitive.ItemIndicator>
+          <CheckIcon className="size-4" />
+        </SelectPrimitive.ItemIndicator>
+      </span>
+      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    </SelectPrimitive.Item>
+  );
+}
+
+interface SelectSeparatorProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator> {
+  className?: string;
+}
+
+
+/**
+ * Renders the separator element for the select dropdown.
+ *
+ * @returns The `SelectPrimitive.Separator` element with `data-slot="select-separator"`.
+ */
+function SelectSeparator({
+  className,
+  ...props
+}: SelectSeparatorProps) {
+  return (
+    <SelectPrimitive.Separator
+      data-slot="select-separator"
+      className={cn("bg-border pointer-events-none -mx-1 my-1 h-px", className)}
+      {...props} />
+  );
+}
+
+interface SelectScrollUpButtonProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton> {
+  className?: string;
+}
+
+/**
+ * Renders a scroll-up control for the Select content, visually represented by an up chevron.
+ *
+ * @returns The scroll-up button element used by the select content
+ */
+function SelectScrollUpButton({
+  className,
+  ...props
+}: SelectScrollUpButtonProps) {
+  return (
+    <SelectPrimitive.ScrollUpButton
+      data-slot="select-scroll-up-button"
+      className={cn("flex cursor-default items-center justify-center py-1", className)}
+      {...props}>
+      <ChevronUpIcon className="size-4" />
+    </SelectPrimitive.ScrollUpButton>
+  );
+}
+
+interface SelectScrollDownButtonProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton> {
+  className?: string;
+}
+
+/**
+ * Renders a styled scroll-down control used inside the Select content.
+ *
+ * Accepts an optional `className` to extend or override the component's base styles.
+ * All other props are forwarded to the underlying Radix `SelectPrimitive.ScrollDownButton`.
+ *
+ * @param className - Additional class names to merge with the component's base classes
+ * @returns The scroll-down button element for the Select dropdown
+ */
+function SelectScrollDownButton({
+  className,
+  ...props
+}: SelectScrollDownButtonProps) {
+  return (
+    <SelectPrimitive.ScrollDownButton
+      data-slot="select-scroll-down-button"
+      className={cn("flex cursor-default items-center justify-center py-1", className)}
+      {...props}>
+      <ChevronDownIcon className="size-4" />
+    </SelectPrimitive.ScrollDownButton>
+  );
+}
+
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+}
