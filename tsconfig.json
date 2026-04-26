@@ -18,10 +18,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Incremental migration — lets JS files coexist */
-    "allowJs": true,
-    "checkJs": false,
-
     /* Paths */
     "paths": {
       "@/*": ["./src/*"]
