@@ -3,15 +3,9 @@ import { useDebounce } from "@/hooks/useDebounce";
 import type { TaskStatus } from "@/types";
 
 /**
- * Manage pagination, search, and status filter state for a todo list UI.
+ * Centralizes pagination, free-text search, and status filter state for a todo list UI.
  *
- * Returns an object containing current filter state and setter functions:
- * - `page` and `setPage`: current page number and updater
- * - `search` and `setSearch`: current raw search text and updater
- * - `debouncedSearch`: `search` value debounced by 500ms
- * - `statusFilter` and `setStatusFilter`: current task status filter (`TaskStatus` or `"all"`) and updater
- *
- * @returns An object with the current filter state and corresponding setter functions
+ * @returns An object with the current `page`, `search`, `debouncedSearch`, and `statusFilter` values and their corresponding setter functions (`setPage`, `setSearch`, `setStatusFilter`).
  */
 export function useTodoFilters() {
   const [page, setPage] = useState(1);

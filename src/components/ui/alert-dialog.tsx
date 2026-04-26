@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 /**
- * Renders a Radix AlertDialog root element and forwards all received props while adding a `data-slot="alert-dialog"` attribute.
+ * Wraps Radix AlertDialog.Root and attaches a `data-slot="alert-dialog"` attribute while forwarding all props.
  *
- * @returns The AlertDialog root element with forwarded props and `data-slot="alert-dialog"`.
+ * @returns A Radix AlertDialog Root element with forwarded props and `data-slot="alert-dialog"`.
  */
 function AlertDialog({
   ...props
@@ -15,11 +15,11 @@ function AlertDialog({
 }
 
 /**
- * Renders the AlertDialog trigger element.
+ * Render the element that opens the alert dialog.
  *
- * This component renders Radix UI's Trigger and sets `data-slot="alert-dialog-trigger"`.
+ * Renders Radix UI's Trigger and sets `data-slot="alert-dialog-trigger"`.
  *
- * @returns The trigger element for the alert dialog.
+ * @returns The alert dialog trigger element.
  */
 function AlertDialogTrigger({
   ...props
@@ -99,13 +99,10 @@ function AlertDialogContent({
 }
 
 /**
- * Renders the alert dialog header container used to layout the title, description, and optional media.
+ * Layout container for the alert dialog header that positions the title, description, and optional media.
  *
- * Accepts standard div attributes; `className` is merged with default layout classes. Sets
- * `data-slot="alert-dialog-header"` and forwards remaining props to the underlying div.
- *
- * @param className - Additional CSS classes to apply to the header container
- * @returns The header div element for the alert dialog with responsive layout and slot metadata
+ * @param className - Additional CSS classes to merge with the header's default layout classes
+ * @returns A `div` element used as the alert dialog header; includes responsive layout and `data-slot="alert-dialog-header"`
  */
 function AlertDialogHeader({
   className,
@@ -149,9 +146,9 @@ function AlertDialogFooter({
 /**
  * Renders a styled AlertDialog title element.
  *
- * The component outputs an AlertDialog primitive Title with a `data-slot="alert-dialog-title"` attribute and merges any provided `className` with the component's base title classes.
+ * Applies the component's base title classes, merges the provided `className`, and sets `data-slot="alert-dialog-title"`.
  *
- * @returns The AlertDialog title element with merged classes and the `data-slot="alert-dialog-title"` attribute.
+ * @returns The AlertDialog title element with merged classes and `data-slot="alert-dialog-title"`.
  */
 function AlertDialogTitle({
   className,
@@ -170,14 +167,12 @@ function AlertDialogTitle({
 }
 
 /**
- * Renders an alert dialog description element with muted, small text styling.
+ * Render the alert dialog description element.
  *
- * The component outputs an AlertDialog description element with the CSS classes
- * `text-muted-foreground text-sm` merged with any provided `className`, and
- * sets `data-slot="alert-dialog-description"`.
+ * Renders the Radix AlertDialog description and merges any provided `className` with the component's default description styling.
  *
  * @param className - Additional CSS classes to merge with the default description styles
- * @returns The rendered alert dialog description element
+ * @returns The rendered AlertDialog description element
  */
 function AlertDialogDescription({
   className,
@@ -230,12 +225,12 @@ interface AlertDialogActionProps extends React.ComponentPropsWithoutRef<
 }
 
 /**
- * Renders an alert dialog action as a styled Button that wraps Radix's Action primitive.
+ * Renders an action button for use inside an alert dialog.
  *
- * @param className - Additional CSS classes applied to the underlying Action element
- * @param variant - Visual variant of the Button (e.g., `"default"`, `"destructive"`, `"outline"`, `"secondary"`, `"ghost"`, `"link"`)
- * @param size - Size of the Button (e.g., `"default"`, `"sm"`, `"lg"`, `"icon"`)
- * @returns The rendered action button element for use inside an alert dialog
+ * @param className - Additional CSS classes applied to the action element
+ * @param variant - Visual variant of the button (e.g., "default", "destructive", "outline", "secondary", "ghost", "link")
+ * @param size - Button size (e.g., "default", "sm", "lg", "icon")
+ * @returns The action button element to place inside an alert dialog
  */
 function AlertDialogAction({
   className,

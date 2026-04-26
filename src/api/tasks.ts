@@ -48,10 +48,10 @@ export async function getTodo(id: string): Promise<Todo> {
 }
 
 /**
- * Create a new todo task using the provided payload.
+ * Creates a new todo task from the provided payload.
  *
- * @param data - Payload describing the todo to create (required `name`; optional `status` and `completed`)
- * @returns The created `Todo` object returned by the server
+ * @param data - Payload describing the todo to create; must include `name` and may include `status` and `completed`
+ * @returns The created `Todo`
  */
 export async function createTodo(data: CreateTodoData): Promise<Todo> {
   const response = await axiosInstance.post<Todo>("/tasks", data);

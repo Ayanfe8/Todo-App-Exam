@@ -101,9 +101,9 @@ interface CardActionProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Renders the Card action area used within a card header, positioned and aligned to the top-right.
+ * Renders the card action container positioned at the top-right of a card header.
  *
- * @returns A JSX element representing the card action container with layout classes applied that forwards remaining div attributes to the underlying element.
+ * @returns The card action container element with any provided HTML attributes applied.
  */
 function CardAction({
   className,
@@ -125,12 +125,10 @@ interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Renders the card content container.
+ * Renders the card content container and forwards any additional HTML div attributes to it.
  *
- * Forwards any additional HTML div attributes to the rendered element.
- *
- * @param className - Additional CSS classes to merge with the default horizontal padding
- * @returns The rendered card content div element with `data-slot="card-content"`
+ * @param className - Additional CSS classes to merge with the default horizontal padding (`px-6`)
+ * @returns A div element with `data-slot="card-content"` and the merged classes
  */
 function CardContent({
   className,

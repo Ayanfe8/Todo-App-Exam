@@ -10,6 +10,12 @@ function Select({
   return <SelectPrimitive.Root data-slot="select" {...props} />;
 }
 
+/**
+ * Wraps Radix UI's SelectPrimitive.Group, forwarding all props and adding `data-slot="select-group"`.
+ *
+ * @param props - Props forwarded to the underlying SelectPrimitive.Group
+ * @returns A React element that renders a select group container
+ */
 function SelectGroup({
   ...props
 }) {
@@ -34,13 +40,13 @@ interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeof Selec
 }
 
 /**
- * Renders the select trigger element used as the visible control for the Select.
+ * Render the Select's visible trigger control.
  *
- * The trigger includes a dropdown icon and exposes a `data-size` attribute that
- * affects its height.
+ * Includes a dropdown icon and exposes a `data-size` attribute (`"sm"` or `"default"`)
+ * which controls the trigger's height.
  *
  * @param size - Visual size of the trigger; `"sm"` renders a shorter trigger, `"default"` renders the standard height.
- * @returns The trigger element to be used as the Select's visible control.
+ * @returns The trigger element used as the Select's visible control.
  */
 function SelectTrigger({
   className,
@@ -119,9 +125,9 @@ interface SelectLabelProps extends React.ComponentPropsWithoutRef<typeof SelectP
 
 
 /**
- * Render a styled label used within the select component.
+ * Renders a label for a group of select items.
  *
- * @returns The label element to display above a group of select items.
+ * @returns The rendered label element for the select group.
  */
 function SelectLabel({
   className,
@@ -142,12 +148,12 @@ interface SelectItemProps extends React.ComponentPropsWithoutRef<typeof SelectPr
 
 
 /**
- * Render a selectable option for the Select component with built-in layout, indicator, and styling.
+ * Render a selectable option for the Select component.
  *
- * Renders a Radix Select item containing a right-side check indicator and an item text slot, applies
- * size/spacing/focus/disabled styles, merges additional class names, and forwards remaining props to
- * the underlying Radix `SelectPrimitive.Item`.
+ * Renders a styled Radix Select item that displays its content and a right-aligned selection indicator; merges `className` into the component's classes and forwards other props to the underlying Radix `SelectPrimitive.Item`.
  *
+ * @param className - Optional additional CSS class names to apply to the item
+ * @param children - Content to render as the item's label
  * @returns A React element representing a selectable item within the Select menu
  */
 function SelectItem({
@@ -181,9 +187,9 @@ interface SelectSeparatorProps extends React.ComponentPropsWithoutRef<typeof Sel
 
 
 /**
- * Renders a styled separator used inside the select dropdown.
+ * Renders the separator element for the select dropdown.
  *
- * @returns A `SelectPrimitive.Separator` element with select-specific layout and spacing classes and `data-slot="select-separator"`.
+ * @returns The `SelectPrimitive.Separator` element with `data-slot="select-separator"`.
  */
 function SelectSeparator({
   className,

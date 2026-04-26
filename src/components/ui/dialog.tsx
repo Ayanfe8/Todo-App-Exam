@@ -17,6 +17,12 @@ function DialogTrigger({
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
 }
 
+/**
+ * Renders a dialog portal element and forwards all props to it.
+ *
+ * @param props - Props to apply to the portal element; all properties are forwarded.
+ * @returns The portal element with the provided props applied.
+ */
 function DialogPortal({
   ...props
 }) {
@@ -164,11 +170,11 @@ interface DialogTitleProps extends React.ComponentPropsWithoutRef<typeof DialogP
 }
 
 /**
- * Renders a styled dialog title element used within the dialog layout.
+ * Renders a styled dialog title element used within dialog layouts.
  *
- * The element includes heading typography classes and a `data-slot="dialog-title"` attribute.
+ * Forwards additional props to the underlying title element.
  *
- * @returns The rendered dialog title element with applied classes and attributes.
+ * @returns A dialog title element with heading typography classes and `data-slot="dialog-title"`.
  */
 function DialogTitle({
   className,

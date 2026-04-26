@@ -18,11 +18,9 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 /**
- * Render the login page and manage form submission, validation, error display, and redirection after authentication.
+ * Render the login page containing an email/password form with validation, inline field errors, an error banner for failed sign-in attempts, and navigation to the originating path after successful authentication.
  *
- * Uses the typed form schema for email/password validation, shows inline field errors, displays an error state for failed login attempts, disables the submit button while submitting, and navigates to the originating path (or `/`) on successful login.
- *
- * @returns The JSX element for the login page.
+ * @returns The rendered JSX element for the login page.
  */
 export default function LoginPage() {
   const { login } = useAuth();

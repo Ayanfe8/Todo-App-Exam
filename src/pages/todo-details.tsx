@@ -11,12 +11,9 @@ import { useUpdateTodo } from "@/features/todoTasks/hooks/usehooks";
 import type { TodoFormData } from "@/features/todoTasks/todos/todo-schema";
 
 /**
- * Render the todo details page for the current route `id`.
+ * Display the todo details page for the current route `id`, including edit mode and a delete confirmation flow.
  *
- * Displays a todo's details, supports toggling into an edit form, and allows deleting the todo with confirmation.
- * Shows a loading state while fetching, an error state with retry on failure, and a "not found" message if the todo is missing.
- *
- * @returns The JSX element for the todo details view.
+ * @returns The rendered todo details view
  */
 export default function TodoDetails() {
   const { id } = useParams<{ id: string }>();

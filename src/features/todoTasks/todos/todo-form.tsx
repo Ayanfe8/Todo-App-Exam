@@ -45,6 +45,14 @@ export default function TodoForm({ initialData = null, onSubmitTodo }: TodoFormP
       completed: initialData?.completed ?? false,
     });
   }, [initialData, reset]);
+  /**
+   * Submit form data to the provided handler and reset the form on success.
+   *
+   * If the submission throws an error, the error is logged to the console.
+   *
+   * @param data - The todo form values to submit
+   * @returns Nothing
+   */
   async function onSubmit(data: TodoFormData) {
     try {
       await onSubmitTodo(data, initialData?.id);

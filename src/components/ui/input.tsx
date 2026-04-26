@@ -6,15 +6,14 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 /**
- * Render a styled input element that forwards native input attributes.
+ * Renders a styled input element with merged utility classes and forwarded native attributes.
  *
- * The component computes and applies a set of default utility classes (including focus and
- * `aria-invalid` styles) and appends the provided `className`. All other props are forwarded
- * to the underlying `<input>` element.
+ * Applies default utility classes (including focus and `aria-invalid` styles) and appends any
+ * provided `className`, while forwarding all other native input attributes to the underlying element.
  *
  * @param className - Optional additional class names to merge with the component's defaults
  * @param type - The input `type` attribute value
- * @param props - Other native input attributes to be passed through to the underlying element
+ * @param props - Other native input attributes to pass through to the underlying `<input>`
  * @returns The rendered `<input>` element with merged classes and forwarded props
  */
 function Input({ className, type, ...props }: InputProps) {
