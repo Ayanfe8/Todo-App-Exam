@@ -6,6 +6,13 @@ interface LabelProps extends React.ComponentPropsWithoutRef<typeof LabelPrimitiv
   className?: string;
 }
 
+/**
+ * Renders a styled label element for form controls.
+ *
+ * @param className - Additional CSS class names to merge with the component's default styles.
+ * @param props - Additional props to be passed through to the underlying label element.
+ * @returns A React element representing the label with composed classes and forwarded props.
+ */
 function Label({ className, ...props }: LabelProps) {
   return (
     <LabelPrimitive.Root

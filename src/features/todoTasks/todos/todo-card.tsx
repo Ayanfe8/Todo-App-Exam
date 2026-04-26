@@ -18,6 +18,17 @@ interface TodoCardProps {
   onNavigate: (id: string) => void;
 }
 
+/**
+ * Render an interactive todo card with edit and delete controls.
+ *
+ * Displays the todo's name and status, supports keyboard activation (Enter/Space),
+ * navigates when the card is activated, opens an edit callback, and shows a confirmation dialog to delete.
+ *
+ * @param todo - The todo item to display.
+ * @param onEdit - Callback invoked with the `todo` when the edit button is clicked.
+ * @param onNavigate - Callback invoked with the todo `id` when the card is activated.
+ * @returns The list item element that acts as a focusable button containing the todo details and action controls.
+ */
 export default function TodoCard({ todo, onEdit, onNavigate }: TodoCardProps) {
   const deleteMutation = useDeleteTodo();
 

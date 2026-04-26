@@ -7,6 +7,14 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+/**
+ * Provides authentication state and actions to descendants via AuthContext.
+ *
+ * Maintains `user` and `loading` state and exposes `login`, `register`, `logout`, and `refresh` through the context.
+ *
+ * @param children - React nodes rendered inside the provider
+ * @returns The provider element that supplies authentication context to its children
+ */
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);

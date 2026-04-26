@@ -12,6 +12,17 @@ interface TodoFormProps {
   onSubmitTodo: (data: TodoFormData, id?: string) => Promise<void>;
 }
 
+/**
+ * Render a form for creating or editing a todo item.
+ *
+ * The form synchronizes its fields with `initialData` whenever it changes, invokes
+ * `onSubmitTodo` with the form data and the optional `initialData.id` on submit,
+ * and resets the form after a successful submit. Submission errors are logged to the console.
+ *
+ * @param initialData - Optional existing `Todo` to edit; when provided the form is populated and operates in edit mode
+ * @param onSubmitTodo - Async handler invoked with `(data: TodoFormData, id?: string)` to create or update the todo
+ * @returns A React element containing inputs for the todo name and completed state and a submit button
+ */
 export default function TodoForm({ initialData = null, onSubmitTodo }: TodoFormProps) {
   const isEditMode = !!initialData;
 

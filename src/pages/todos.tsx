@@ -14,6 +14,11 @@ import ErrorState from "@/components/errorstate";
 import type { Todo, TaskStatus } from "@/types";
 import type { TodoFormData } from "@/features/todoTasks/todos/todo-schema";
 
+/**
+ * Renders the Tasks page with a creation form, search and status filters, a paginated todo list, and an in-place edit modal.
+ *
+ * @returns The JSX element for the Todos page.
+ */
 export default function Todos() {
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 

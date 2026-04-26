@@ -16,6 +16,19 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
 }
 
+/**
+ * Renders a controlled confirmation dialog with a title, description, and Cancel/Confirm actions.
+ *
+ * The dialog is controlled via the `open` prop. User-initiated closes (backdrop click or ESC)
+ * will invoke `onCancel`. The Cancel and Confirm buttons call `onCancel` and `onConfirm`, respectively.
+ *
+ * @param open - Whether the dialog is visible
+ * @param title - Dialog title text
+ * @param description - Dialog descriptive text
+ * @param onCancel - Callback invoked when the dialog is cancelled or closed by user interaction
+ * @param onConfirm - Callback invoked when the Confirm action is triggered
+ * @returns The rendered confirmation dialog element
+ */
 export default function ConfirmDialog({
   open,
   title,

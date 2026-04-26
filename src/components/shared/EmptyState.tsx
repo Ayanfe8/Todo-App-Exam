@@ -1,3 +1,9 @@
+/**
+ * Render a centered empty-state UI containing an icon and a message.
+ *
+ * @param message - Text to display beneath the icon
+ * @returns A JSX element showing a centered icon with the provided message
+ */
 export default function EmptyState({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center justify-center h-full text-gray-500">

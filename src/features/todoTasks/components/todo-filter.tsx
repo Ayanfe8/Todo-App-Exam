@@ -14,6 +14,15 @@ interface TodoFilterProps {
   setStatusFilter: (value: TaskStatus | "all") => void;
 }
 
+/**
+ * Renders search and status controls for filtering todo tasks.
+ *
+ * @param statusFilter - Current task status filter; use `"all"` to show every task
+ * @param setStatusFilter - Callback invoked with a new status value when the status selection changes
+ * @param search - Current text search query
+ * @param setSearch - Callback invoked with the updated search string when the input changes
+ * @returns The filter UI containing a text search input and a status dropdown
+ */
 export default function TodoFilter({
   statusFilter,
   setStatusFilter,

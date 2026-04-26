@@ -3,12 +3,24 @@ import { AlertDialog as AlertDialogPrimitive } from "radix-ui";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
+/**
+ * Renders a Radix AlertDialog root element and forwards all received props while adding a `data-slot="alert-dialog"` attribute.
+ *
+ * @returns The AlertDialog root element with forwarded props and `data-slot="alert-dialog"`.
+ */
 function AlertDialog({
   ...props
 }: React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Root>) {
   return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} />;
 }
 
+/**
+ * Renders the AlertDialog trigger element.
+ *
+ * This component renders Radix UI's Trigger and sets `data-slot="alert-dialog-trigger"`.
+ *
+ * @returns The trigger element for the alert dialog.
+ */
 function AlertDialogTrigger({
   ...props
 }: React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Trigger>) {
@@ -17,6 +29,11 @@ function AlertDialogTrigger({
   );
 }
 
+/**
+ * Renders a portal for AlertDialog content.
+ *
+ * @returns A Portal element with `data-slot="alert-dialog-portal"` and any provided props forwarded to the underlying portal primitive.
+ */
 function AlertDialogPortal({
   ...props
 }: React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Portal>) {
@@ -25,6 +42,12 @@ function AlertDialogPortal({
   );
 }
 
+/**
+ * Render the AlertDialog backdrop with built-in positioning, dimming, and Radix open/close animations.
+ *
+ * @param className - Additional CSS class names to merge with the overlay's base classes
+ * @returns The rendered overlay element
+ */
 function AlertDialogOverlay({
   className,
   ...props
@@ -48,6 +71,12 @@ interface AlertDialogContentProps extends React.ComponentPropsWithoutRef<
   className?: string;
 }
 
+/**
+ * Renders the alert dialog panel centered in a portal with an overlay and responsive size variants.
+ *
+ * @param size - The size variant that controls the dialog's max-width (`"sm"` produces a small dialog, `"default"` produces a larger dialog). Defaults to `"default"`.
+ * @returns The alert dialog content element (including its overlay) rendered inside a portal.
+ */
 function AlertDialogContent({
   className,
   size = "default",
@@ -69,6 +98,15 @@ function AlertDialogContent({
   );
 }
 
+/**
+ * Renders the alert dialog header container used to layout the title, description, and optional media.
+ *
+ * Accepts standard div attributes; `className` is merged with default layout classes. Sets
+ * `data-slot="alert-dialog-header"` and forwards remaining props to the underlying div.
+ *
+ * @param className - Additional CSS classes to apply to the header container
+ * @returns The header div element for the alert dialog with responsive layout and slot metadata
+ */
 function AlertDialogHeader({
   className,
   ...props
@@ -85,6 +123,13 @@ function AlertDialogHeader({
   );
 }
 
+/**
+ * Layout container for an alert dialog footer that adapts spacing and alignment across sizes.
+ *
+ * Renders a footer element that stacks controls vertically on narrow screens and arranges them in a right-aligned row on larger screens. Accepts standard div attributes and merges an optional `className`.
+ *
+ * @returns The footer DOM element for an alert dialog.
+ */
 function AlertDialogFooter({
   className,
   ...props
@@ -101,6 +146,13 @@ function AlertDialogFooter({
   );
 }
 
+/**
+ * Renders a styled AlertDialog title element.
+ *
+ * The component outputs an AlertDialog primitive Title with a `data-slot="alert-dialog-title"` attribute and merges any provided `className` with the component's base title classes.
+ *
+ * @returns The AlertDialog title element with merged classes and the `data-slot="alert-dialog-title"` attribute.
+ */
 function AlertDialogTitle({
   className,
   ...props
@@ -117,6 +169,16 @@ function AlertDialogTitle({
   );
 }
 
+/**
+ * Renders an alert dialog description element with muted, small text styling.
+ *
+ * The component outputs an AlertDialog description element with the CSS classes
+ * `text-muted-foreground text-sm` merged with any provided `className`, and
+ * sets `data-slot="alert-dialog-description"`.
+ *
+ * @param className - Additional CSS classes to merge with the default description styles
+ * @returns The rendered alert dialog description element
+ */
 function AlertDialogDescription({
   className,
   ...props
@@ -130,6 +192,13 @@ function AlertDialogDescription({
   );
 }
 
+/**
+ * Renders the alert dialog's media container (typically used for an icon).
+ *
+ * Applies default layout and sizing classes, sets `data-slot="alert-dialog-media"`, and forwards native div attributes.
+ *
+ * @returns A `div` element serving as the dialog's media area with the `data-slot="alert-dialog-media"` attribute.
+ */
 function AlertDialogMedia({
   className,
   ...props
@@ -160,6 +229,14 @@ interface AlertDialogActionProps extends React.ComponentPropsWithoutRef<
   className?: string;
 }
 
+/**
+ * Renders an alert dialog action as a styled Button that wraps Radix's Action primitive.
+ *
+ * @param className - Additional CSS classes applied to the underlying Action element
+ * @param variant - Visual variant of the Button (e.g., `"default"`, `"destructive"`, `"outline"`, `"secondary"`, `"ghost"`, `"link"`)
+ * @param size - Size of the Button (e.g., `"default"`, `"sm"`, `"lg"`, `"icon"`)
+ * @returns The rendered action button element for use inside an alert dialog
+ */
 function AlertDialogAction({
   className,
   variant = "default",
@@ -191,6 +268,14 @@ interface AlertDialogCancelProps extends React.ComponentPropsWithoutRef<
   className?: string;
 }
 
+/**
+ * Renders a cancel action for an AlertDialog, styled as the library Button and wired to Radix's Cancel primitive.
+ *
+ * @param className - Additional CSS classes to apply to the underlying cancel element
+ * @param variant - Button visual variant; defaults to `"outline"`
+ * @param size - Button size; defaults to `"default"`
+ * @returns A JSX element: a `Button` (asChild) that wraps Radix's `AlertDialogPrimitive.Cancel` with the provided props and styling
+ */
 function AlertDialogCancel({
   className,
   variant = "outline",

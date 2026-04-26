@@ -26,6 +26,14 @@ const registerSchema = z
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
+/**
+ * Render the registration page with a validated sign-up form and submission handling.
+ *
+ * Validates user input using the Zod `registerSchema`, submits form data via the authentication hook,
+ * displays non-validation errors using `ErrorState`, and navigates to `/login` after successful registration.
+ *
+ * @returns A React element containing the registration form and related UI.
+ */
 export default function RegisterPage() {
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();

@@ -23,6 +23,12 @@ function DialogPortal({
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
 }
 
+/**
+ * Renders a dialog close control and forwards all props to the underlying Close primitive while setting `data-slot="dialog-close"`.
+ *
+ * @param props - Props forwarded to the Close primitive.
+ * @returns The Close element with `data-slot="dialog-close"` and forwarded props.
+ */
 function DialogClose({
   ...props
 }) {
@@ -33,6 +39,12 @@ interface DialogOverlayProps extends React.ComponentPropsWithoutRef<typeof Dialo
   className?: string;
 }
 
+/**
+ * Renders the dialog backdrop overlay with default animations, fixed positioning, and a semi-transparent background.
+ *
+ * @param className - Additional CSS classes to merge with the component's default styles.
+ * @returns The rendered dialog overlay element.
+ */
 function DialogOverlay({
   className,
   ...props
@@ -54,6 +66,14 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
   children?: React.ReactNode;
 }
 
+/**
+ * Renders dialog content inside a portal with an overlay and an optional close button.
+ *
+ * @param className - Additional CSS classes to apply to the content container
+ * @param children - Content to be rendered inside the dialog
+ * @param showCloseButton - Whether to show the built-in close icon button; defaults to `true`
+ * @returns The dialog content element wrapped in a portal and overlay
+ */
 function DialogContent({
   className,
   children,
@@ -84,6 +104,12 @@ function DialogContent({
   );
 }
 
+/**
+ * Renders the dialog header container with responsive layout and merged class names.
+ *
+ * @param className - Additional class names to merge with the default header styles.
+ * @returns The `<div>` element used as the dialog header with any passed HTML attributes forwarded.
+ */
 function DialogHeader({
   className,
   ...props
@@ -102,6 +128,16 @@ interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
 
+/**
+ * Renders the dialog footer containing action elements.
+ *
+ * Renders provided children and, when enabled, a Close button that closes the dialog.
+ *
+ * @param className - Additional CSS classes to apply to the footer container
+ * @param showCloseButton - If `true`, renders an outlined "Close" button that triggers dialog close
+ * @param children - Elements to display in the footer; rendered before the optional close button
+ * @returns A JSX element that serves as the dialog's footer container with layout and controls
+ */
 function DialogFooter({
   className,
   showCloseButton = false,
@@ -127,6 +163,13 @@ interface DialogTitleProps extends React.ComponentPropsWithoutRef<typeof DialogP
   className?: string;
 }
 
+/**
+ * Renders a styled dialog title element used within the dialog layout.
+ *
+ * The element includes heading typography classes and a `data-slot="dialog-title"` attribute.
+ *
+ * @returns The rendered dialog title element with applied classes and attributes.
+ */
 function DialogTitle({
   className,
   ...props
@@ -139,6 +182,11 @@ function DialogTitle({
   );
 }
 
+/**
+ * Renders a dialog description element with muted text styling and optional custom classes.
+ *
+ * @returns The rendered dialog description element
+ */
 function DialogDescription({
   className,
   ...props

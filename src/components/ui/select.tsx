@@ -16,6 +16,11 @@ function SelectGroup({
   return <SelectPrimitive.Group data-slot="select-group" {...props} />;
 }
 
+/**
+ * Renders a SelectPrimitive.Value element configured for this Select implementation.
+ *
+ * @returns The `SelectPrimitive.Value` element with `data-slot="select-value"` and any supplied props applied.
+ */
 function SelectValue({
   ...props
 }) {
@@ -28,6 +33,15 @@ interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeof Selec
   children?: React.ReactNode;
 }
 
+/**
+ * Renders the select trigger element used as the visible control for the Select.
+ *
+ * The trigger includes a dropdown icon and exposes a `data-size` attribute that
+ * affects its height.
+ *
+ * @param size - Visual size of the trigger; `"sm"` renders a shorter trigger, `"default"` renders the standard height.
+ * @returns The trigger element to be used as the Select's visible control.
+ */
 function SelectTrigger({
   className,
   size = "default",
@@ -58,6 +72,15 @@ interface SelectContentProps extends React.ComponentPropsWithoutRef<typeof Selec
   align?: "start" | "center" | "end";
 }
 
+/**
+ * Render the select dropdown content and its viewport, including scroll controls.
+ *
+ * @param className - Optional additional class names applied to the content container.
+ * @param children - Elements rendered inside the select viewport.
+ * @param position - Positioning strategy for the content. `"item-aligned"` aligns items by default; `"popper"` aligns the content to the trigger and enables small translation/offset adjustments.
+ * @param align - Horizontal alignment of the content relative to the trigger: `"start"`, `"center"`, or `"end"`.
+ * @returns The select content element (wrapped in a portal) containing scroll up/down controls and a viewport that renders `children`.
+ */
 function SelectContent({
   className,
   children,
@@ -95,6 +118,11 @@ interface SelectLabelProps extends React.ComponentPropsWithoutRef<typeof SelectP
 }
 
 
+/**
+ * Render a styled label used within the select component.
+ *
+ * @returns The label element to display above a group of select items.
+ */
 function SelectLabel({
   className,
   ...props
@@ -113,6 +141,15 @@ interface SelectItemProps extends React.ComponentPropsWithoutRef<typeof SelectPr
 }
 
 
+/**
+ * Render a selectable option for the Select component with built-in layout, indicator, and styling.
+ *
+ * Renders a Radix Select item containing a right-side check indicator and an item text slot, applies
+ * size/spacing/focus/disabled styles, merges additional class names, and forwards remaining props to
+ * the underlying Radix `SelectPrimitive.Item`.
+ *
+ * @returns A React element representing a selectable item within the Select menu
+ */
 function SelectItem({
   className,
   children,
@@ -143,6 +180,11 @@ interface SelectSeparatorProps extends React.ComponentPropsWithoutRef<typeof Sel
 }
 
 
+/**
+ * Renders a styled separator used inside the select dropdown.
+ *
+ * @returns A `SelectPrimitive.Separator` element with select-specific layout and spacing classes and `data-slot="select-separator"`.
+ */
 function SelectSeparator({
   className,
   ...props
@@ -159,6 +201,11 @@ interface SelectScrollUpButtonProps extends React.ComponentPropsWithoutRef<typeo
   className?: string;
 }
 
+/**
+ * Renders a scroll-up control for the Select content, visually represented by an up chevron.
+ *
+ * @returns The scroll-up button element used by the select content
+ */
 function SelectScrollUpButton({
   className,
   ...props
@@ -177,6 +224,15 @@ interface SelectScrollDownButtonProps extends React.ComponentPropsWithoutRef<typ
   className?: string;
 }
 
+/**
+ * Renders a styled scroll-down control used inside the Select content.
+ *
+ * Accepts an optional `className` to extend or override the component's base styles.
+ * All other props are forwarded to the underlying Radix `SelectPrimitive.ScrollDownButton`.
+ *
+ * @param className - Additional class names to merge with the component's base classes
+ * @returns The scroll-down button element for the Select dropdown
+ */
 function SelectScrollDownButton({
   className,
   ...props

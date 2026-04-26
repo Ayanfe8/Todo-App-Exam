@@ -45,6 +45,16 @@ const buttonVariants = cva(
   }
 )
 
+/**
+ * Render a styled button or a custom child element with variant and size styling.
+ *
+ * @param className - Additional CSS classes to merge with the component's computed classes
+ * @param variant - Visual style to apply; one of `"default"`, `"destructive"`, `"outline"`, `"secondary"`, `"ghost"`, or `"link"`
+ * @param size - Size variant to apply; one of `"default"`, `"xs"`, `"sm"`, `"lg"`, `"icon"`, `"icon-xs"`, `"icon-sm"`, or `"icon-lg"`
+ * @param asChild - If `true`, render the provided `Slot.Root` (allowing the caller to supply the underlying element); otherwise render a native `button`
+ * @param props - Remaining native button attributes and event handlers to forward to the rendered element
+ * @returns A JSX element for the button (or the supplied child) with computed class names and `data-variant`/`data-size` attributes
+ */
 function Button({
   className,
   variant = "default",
