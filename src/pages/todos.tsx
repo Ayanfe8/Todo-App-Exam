@@ -71,7 +71,7 @@ export default function Todos() {
           setSearch(value);
         }}
         statusFilter={statusFilter}
-        setStatusFilter={(value: TaskStatus) => {
+        setStatusFilter={(value: TaskStatus | "all") => {
           setPage(1);
           setStatusFilter(value);
         }}
